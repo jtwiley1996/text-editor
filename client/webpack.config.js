@@ -18,13 +18,60 @@ module.exports = () => {
       path: path.resolve(__dirname, 'dist'),
     },
     plugins: [
-      
+      new HtmlWebpackPlugin({
+        template: './src/index.html',
+        filename: 'index.html',
+        chunks: ['main']
+      }),
+      new HtmlWebpackPlugin({
+        template: './src/install.html',
+        filename: 'install.html',
+        chunks: ['install']
+      }),
+      new WebpackPwaManifest({
+        name: 'Your App Name',
+        short_name: 'App',
+        description: 'Description of your app',
+        background_color: '#ffffff',
+        theme_color: '#ffffff',
+        icons: [
+          {
+            src: path.resolve('src/assets/icon.png'),
+            sizes: [96, 128, 192, 256, 384, 512], // multiple sizes
+            destination: path.join('icons', 'ios'), // save icons for iOS
+          },
+          {
+            src: path.resolve('src/assets/icon.png'),
+            size: '1024x1024', // single size
+            destination: path.join('icons', 'android'), // save icons for Android
+            purpose: 'maskable',
+          },
+        ],
+      }),
+      new InjectManifest({
+        swSrc: './src/service-worker.js',
+        swDest: 'service-worker.js',
+      }),
     ],
 
     module: {
       rules: [
-        
+        {
+          test: /\.css$/,
+          use: ['style-loader', 'css-loader'],
+        },
+        {
+          test: /\.js$/,
+          exclude: /node_modules/,
+          use: {
+            loader: 'babel-loader',
+            options: {
+              presets: ['@babel/preset-env'],
+            },
+          },
+        },
       ],
     },
   };
 };
+
