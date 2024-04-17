@@ -3,6 +3,7 @@ const WebpackPwaManifest = require('webpack-pwa-manifest');
 const path = require('path');
 const { InjectManifest } = require('workbox-webpack-plugin');
 
+
 module.exports = () => {
   return {
     mode: 'development',
@@ -12,8 +13,6 @@ module.exports = () => {
       database: './src/js/database.js',
       editor: './src/js/editor.js',
       header: './src/js/header.js',
-      // Add the new entry point here
-      newEntry: './src/js/newEntry.js',
     },
     output: {
       filename: '[name].bundle.js',
